@@ -21,7 +21,7 @@ async function getAccessToken() {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-      },
+      }
     );
 
     // console.log("Token:", response.data.access_token);
@@ -59,7 +59,7 @@ async function insertInsuredInMomentum(contact, token) {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      },
+      }
     );
 
     return response.data;
@@ -79,14 +79,14 @@ async function createOpportunityInMomentum(opportunityData, token) {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      },
+      }
     );
 
     return response.data;
   } catch (error) {
     console.error(
       "Error creating Opportunity in Momentum:",
-      error.response?.data || error.message,
+      error.response?.data || error.message
     );
     return null;
   }
@@ -122,7 +122,7 @@ async function fetchMomentumCustomers(token) {
   } catch (error) {
     console.error(
       "Error fetching customers from NowCerts:",
-      error.response?.data || error.message,
+      error.response?.data || error.message
     );
     return [];
   }
@@ -206,7 +206,7 @@ async function getMomentumInsuredContacts(token, insuredIds) {
   } catch (error) {
     console.error(
       "Error fetching insured contacts:",
-      error.response?.data || error,
+      error.response?.data || error
     );
     return null;
   }
@@ -231,7 +231,7 @@ async function PutCompanyInMomentum(companyData) {
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(
-      `Error creating company: ${response.status} ${JSON.stringify(errorData)}`,
+      `Error creating company: ${response.status} ${JSON.stringify(errorData)}`
     );
   }
 
@@ -349,7 +349,7 @@ async function fetchAllCustomerToMomentum(token, maxId = 5000) {
     all.reduce((acc, c) => {
       acc[c.CustomerId] = c;
       return acc;
-    }, {}),
+    }, {})
   );
 
   console.log("TOTAL UNIQUE CUSTOMERS:", unique.length);
@@ -368,14 +368,14 @@ async function insertNowCertsCompany(payload) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.HUBSPOT_API_ACCESS_TOKEN}`,
         },
-      },
+      }
     );
 
     return response.data;
   } catch (error) {
     console.error(
       "Error inserting insured:",
-      error.response?.data || error.message,
+      error.response?.data || error.message
     );
     throw error;
   }
@@ -393,14 +393,14 @@ async function insertNowCertsContacts(payload) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.HUBSPOT_API_ACCESS_TOKEN}`,
         },
-      },
+      }
     );
 
     return response.data;
   } catch (error) {
     console.error(
       "NowCerts Insured Insert Error:",
-      error.response?.data || error.message,
+      error.response?.data || error.message
     );
     throw error;
   }
@@ -451,7 +451,7 @@ async function getCompaniesModifiedLast1Hour() {
             Authorization: `Bearer ${process.env.HUBSPOT_API_ACCESS_TOKEN}`,
             "Content-Type": "application/json",
           },
-        },
+        }
       );
 
       companies.push(...response.data.results);
@@ -464,7 +464,7 @@ async function getCompaniesModifiedLast1Hour() {
   } catch (error) {
     console.error(
       "❌ Error fetching HubSpot companies (last 1 hour):",
-      error.response?.data || error.message,
+      error.response?.data || error.message
     );
     return [];
   }
@@ -520,7 +520,7 @@ async function getContactsModifiedLast1Hour() {
             Authorization: `Bearer ${process.env.HUBSPOT_API_ACCESS_TOKEN}`,
             "Content-Type": "application/json",
           },
-        },
+        }
       );
 
       contacts.push(...response.data.results);
@@ -532,7 +532,7 @@ async function getContactsModifiedLast1Hour() {
   } catch (error) {
     console.error(
       "❌ Error fetching HubSpot contacts (last 1 hour):",
-      error.response?.data || error.message,
+      error.response?.data || error.message
     );
     return [];
   }
@@ -574,7 +574,7 @@ async function searchContractBySourceId(sourceId) {
   } catch (error) {
     console.error(
       "Error searching deal by sourceid:",
-      error.response?.data || error.message,
+      error.response?.data || error.message
     );
     return null;
   }
@@ -603,7 +603,7 @@ async function updateContactById(contactId, momentum) {
           Authorization: `Bearer ${process.env.HUBSPOT_API_ACCESS_TOKEN}`,
           "Content-Type": "application/json",
         },
-      },
+      }
     );
 
     // console.log("✅ Contact updated successfully:", response.data.id);
@@ -611,7 +611,7 @@ async function updateContactById(contactId, momentum) {
   } catch (error) {
     console.error(
       "❌ Error updating HubSpot contact:",
-      error?.response?.data || error.message,
+      error?.response?.data || error.message
     );
     return null;
   }
@@ -683,7 +683,7 @@ async function getCompanyById(companyId) {
           Authorization: `Bearer ${process.env.HUBSPOT_API_ACCESS_TOKEN}`,
           "Content-Type": "application/json",
         },
-      },
+      }
     );
 
     console.log("✅ Company fetched successfully:", response.data.id);
@@ -691,7 +691,7 @@ async function getCompanyById(companyId) {
   } catch (error) {
     console.error(
       "❌ Error fetching company:",
-      error?.response?.data || error.message,
+      error?.response?.data || error.message
     );
     return null;
   }
@@ -1021,7 +1021,7 @@ async function fetchContactsWithSourceGroup() {
             Authorization: `Bearer ${process.env.HUBSPOT_API_ACCESS_TOKEN}`,
             "Content-Type": "application/json",
           },
-        },
+        }
       );
 
       const results = response.data.results || [];
@@ -1031,7 +1031,7 @@ async function fetchContactsWithSourceGroup() {
       after = response.data.paging?.next?.after;
 
       console.log(
-        `Fetched ${results.length} contacts | Total: ${allContacts.length}`,
+        `Fetched ${results.length} contacts | Total: ${allContacts.length}`
       );
     } while (after);
 
@@ -1039,7 +1039,7 @@ async function fetchContactsWithSourceGroup() {
   } catch (error) {
     console.error(
       "Error fetching HubSpot contacts (delta + pagination):",
-      error.response?.data || error.message,
+      error.response?.data || error.message
     );
     return allContacts;
   }
@@ -1059,14 +1059,14 @@ async function insertInsuredContact(data, accessToken) {
           Cookie:
             "ARRAffinity=34e9092522d828ce3f68b0fc2d734f9da443874f86beba281a0c943e057a71cc; ARRAffinitySameSite=34e9092522d828ce3f68b0fc2d734f9da443874f86beba281a0c943e057a71cc",
         },
-      },
+      }
     );
 
     return response?.data;
   } catch (error) {
     console.error(
       "Error inserting insured record:",
-      error.response?.data || error.message,
+      error.response?.data || error.message
     );
     throw error;
   }
@@ -1075,7 +1075,7 @@ async function insertInsuredContact(data, accessToken) {
 // Search lifestage contacts
 
 // async function searchLifestageContacts() {
-  
+
 //   console.log("Fetching contacts with lifecyclestage");
 
 //   const allContacts = [];
@@ -1135,7 +1135,7 @@ async function insertInsuredContact(data, accessToken) {
 //       console.log(
 //         `Fetched ${results.length} contacts | Total: ${allContacts.length}`
 //       );
-      
+
 //     } while (after);
 
 //     return allContacts;
@@ -1230,12 +1230,12 @@ async function insertInsuredContact(data, accessToken) {
 
 // add delta function
 async function searchLifestageContacts() {
-  console.log("Fetching contacts updated in last 30 min");
+  console.log("Fetching contacts updated in last hour min");
 
   const allContacts = [];
   let after = undefined;
 
-  const thirtyMinutesAgo = Date.now() - 30 * 60 * 1000;
+  const oneHourAgo = Date.now() - 60 * 60 * 1000;
 
   try {
     do {
@@ -1246,7 +1246,7 @@ async function searchLifestageContacts() {
               {
                 propertyName: "hs_lastmodifieddate",
                 operator: "GTE",
-                value: thirtyMinutesAgo.toString(),
+                value: oneHourAgo.toString(),
               },
             ],
           },
@@ -1266,7 +1266,6 @@ async function searchLifestageContacts() {
           "project_description",
           "website",
           "commercialName",
-          
         ],
         limit: 200,
         ...(after && { after }),
@@ -1294,10 +1293,7 @@ async function searchLifestageContacts() {
     } while (after);
 
     // ✅ filter lifecyclestage safely in code
-    return allContacts.filter(
-      c => c.properties?.lifecyclestage
-    );
-
+    return allContacts.filter((c) => c.properties?.lifecyclestage);
   } catch (error) {
     console.error(
       "Error fetching lifecyclestage contacts:",
@@ -1306,12 +1302,6 @@ async function searchLifestageContacts() {
     return allContacts;
   }
 }
-
-
-
-
-
-
 
 // search Prospects in momentum
 
@@ -1327,14 +1317,14 @@ async function SearchProspectsMomentum(databaseId, accessToken) {
           Accept: "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-      },
+      }
     );
 
     return response.data;
   } catch (error) {
     console.error(
       "Error fetching NOWCERTS customers:",
-      error.response?.data || error.message,
+      error.response?.data || error.message
     );
     return null;
   }
@@ -1352,31 +1342,29 @@ async function insertProspectInMomentum(payload, accessToken) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-      },
+      }
     );
     return response.data;
   } catch (error) {
     console.error(
       "Error inserting insured:",
-      error.response?.data || error.message,
+      error.response?.data || error.message
     );
     return null;
   }
 }
 
-
 // Insert Principal function in Momentum
-async function insertPrincipal(payload,accessToken) {
+async function insertPrincipal(payload, accessToken) {
   try {
-
     const response = await axios.post(
       "https://api.nowcerts.com/api/Zapier/InsertPrincipal",
       payload,
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`
-        }
+          Authorization: `Bearer ${accessToken}`,
+        },
       }
     );
 
@@ -1450,14 +1438,14 @@ async function SearchdatabaseIdInMomentum(email, accessToken) {
           Accept: "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-      },
+      }
     );
 
-    return response.data [0] || null;
+    return response.data[0] || null;
   } catch (error) {
     console.error(
       "Error fetching NOWCERTS customers:",
-      error.response?.data || error.message,
+      error.response?.data || error.message
     );
     return null;
   }
@@ -1467,7 +1455,7 @@ async function SearchdatabaseIdInMomentum(email, accessToken) {
 
 async function insertQuoteInMomentum({ payload, accessToken }) {
   if (!payload) {
-   return null;
+    return null;
   }
 
   try {
@@ -1492,8 +1480,6 @@ async function insertQuoteInMomentum({ payload, accessToken }) {
     return null;
   }
 }
-
-
 
 export {
   getAccessToken,

@@ -3,35 +3,24 @@ import cron from "node-cron";
 import { syncProspectContact } from "../Controller/syncProspectContact.js";
 
 let isRunning = false;
-let counter = 1;
 
-// 1 Second
-// cron.schedule(" */1 * * * * *", async () => {
-//     logger.info(`🚀 Cron started : ${counter}`);
-//     counter++;
-//     // await syncContactMomentum();
-//     // logger.info("✅ Cron finished");
-// });
+logger.info(`➡️ Every hour Momentum Schedular Intialized`);
 
-// 1 Hour
-// cron.schedule("0 0 */1 * * *", async () => {
-//     logger.info(`🚀 Cron started : ${counter}`);
-//     counter++;
-//     // await syncContactMomentum();
-//     // logger.info("✅ Cron finished");
-// });
-
-// 15min
-logger.info(`Every 15 min Schedular Intialized`);
-
-cron.schedule("0 */15 * * * *", async () => {
+cron.schedule("0 0 * * * *", async () => {
   try {
-    logger.info(`Every 15 min Schedular Started `);
+    if (isRunning) {
+      logger.info("⏳ Previous job still running, skipping...");
+      return;
+    }
+    isRunning = true;
+    logger.info(`Every hour Schedular Started `);
 
     await syncProspectContact();
     logger.info("✅ Cron finished");
   } catch (error) {
-    logger.error("❌ Cron error:", error);
+    logger.error("❌ Scheduler error:", error);
+  } finally {
+    isRunning = false;
   }
 });
 
