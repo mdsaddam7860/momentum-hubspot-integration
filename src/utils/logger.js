@@ -1,5 +1,3 @@
-
-
 import winston from "winston";
 
 const { combine, timestamp, printf, colorize, errors } = winston.format;
@@ -15,7 +13,7 @@ const fileFormat = printf(({ level, message, timestamp, stack }) => {
 });
 
 const logger = winston.createLogger({
-  level: "debug",
+  level: "info",
 
   format: combine(errors({ stack: true })),
 
@@ -23,18 +21,12 @@ const logger = winston.createLogger({
     new winston.transports.File({
       filename: "logs/error.log",
       level: "error",
-      format: combine(
-        timestamp({ format: timeFormat }),
-        fileFormat
-      ),
+      format: combine(timestamp({ format: timeFormat }), fileFormat),
     }),
 
     new winston.transports.File({
       filename: "logs/combined.log",
-      format: combine(
-        timestamp({ format: timeFormat }),
-        fileFormat
-      ),
+      format: combine(timestamp({ format: timeFormat }), fileFormat),
     }),
   ],
 });

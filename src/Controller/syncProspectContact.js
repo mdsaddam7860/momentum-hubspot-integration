@@ -22,9 +22,7 @@ async function syncProspectContact() {
 
     //
     const contacts = await searchLifestageContacts();
-    logger.info(
-      `Lifestage Contacts:${JSON.stringify(lifestageContacts.length)}`
-    );
+    logger.info(`Lifestage Contacts:${JSON.stringify(contacts.length)}`);
 
     for (const contact of contacts) {
       try {
@@ -42,7 +40,7 @@ async function syncProspectContact() {
         ) {
           logger.info(
             `Processing contact ID ${JSON.stringify(
-              contact.id,
+              contact,
               null,
               2
             )} | Stage: ${lifecycleStage}`
@@ -66,6 +64,10 @@ async function syncProspectContact() {
           if (associatedCompany?.id) {
             company = await getCompanyById(associatedCompany.id);
             logger.info(`Company ${JSON.stringify(company, null, 2)}`);
+          }
+
+          if (!company) {
+            logger.info(`No company found for contact ID:${contact.id}`);
           }
 
           // Build payload
@@ -98,13 +100,14 @@ async function syncProspectContact() {
               2
             )}`
           );
+          return; // TODO Remove after testing
         }
         //-----------------------------------------------------------------------------------------------
         // for customer
         if (lifecycleStage === "customer") {
           logger.info(
             `Processing contact ID${JSON.stringify(
-              contact.id,
+              contact,
               null,
               2
             )} | Stage: ${lifecycleStage}`
@@ -162,9 +165,10 @@ async function syncProspectContact() {
               2
             )}`
           );
+          return; // TODO Remove after testing
         }
       } catch (error) {
-        console.error(`Error syncing Contact ID ${contact}:`, error);
+        logger.error(`Error syncing Contact ID ${contact}:`, error);
       }
     }
     logger.info(" ☘️ All Prospect synced successfully.");

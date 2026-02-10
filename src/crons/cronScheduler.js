@@ -4,7 +4,7 @@ import { syncProspectContact } from "../Controller/syncProspectContact.js";
 
 let isRunning = false;
 
-logger.info(`➡️ Every hour Momentum Schedular Intialized`);
+logger.info(`➡️   Every hour Momentum Schedular Intialized`);
 
 cron.schedule("0 0 * * * *", async () => {
   try {

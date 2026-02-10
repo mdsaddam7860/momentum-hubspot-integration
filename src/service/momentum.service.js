@@ -1,19 +1,18 @@
 // import axios from "axios";
 
-import axios, { all } from "axios";
+import axios from "axios";
 import qs from "qs";
 import { logger } from "../index.js";
 
-// get access token
+const body = qs.stringify({
+  grant_type: "password",
+  client_id: "ngAuthApp",
+  username: "manik.soi@insidea.com",
+  password: "Insidea123",
+});
+
 async function getAccessToken() {
   try {
-    const body = qs.stringify({
-      grant_type: "password",
-      client_id: "ngAuthApp",
-      username: "manik.soi@insidea.com",
-      password: "Insidea123",
-    });
-
     const response = await axios.post(
       "https://api.nowcerts.com/api/token",
       body,
@@ -24,10 +23,9 @@ async function getAccessToken() {
       }
     );
 
-    // console.log("Token:", response.data.access_token);
-    return response.data.access_token;
+    return response.data?.access_token;
   } catch (err) {
-    console.error("Token error:", err.response?.data || err.message);
+    logger.error("Token error:", err.response?.data || err.message || err);
     return null;
   }
 }
@@ -64,7 +62,7 @@ async function insertInsuredInMomentum(contact, token) {
 
     return response.data;
   } catch (error) {
-    console.error("❌ Momentum Error:", error.response?.data || error);
+    logger.error("❌ Momentum Error:", error.response?.data || error);
     return null;
   }
 }
@@ -84,7 +82,7 @@ async function createOpportunityInMomentum(opportunityData, token) {
 
     return response.data;
   } catch (error) {
-    console.error(
+    logger.error(
       "Error creating Opportunity in Momentum:",
       error.response?.data || error.message
     );
@@ -120,7 +118,7 @@ async function fetchMomentumCustomers(token) {
 
     return response.data.value;
   } catch (error) {
-    console.error(
+    logger.error(
       "Error fetching customers from NowCerts:",
       error.response?.data || error.message
     );
@@ -176,7 +174,7 @@ async function fetchMomentumCustomers(token) {
 //     return allCustomers;
 
 //   } catch (error) {
-//     console.error(
+//     logger.error(
 //       "Error fetching customers from NowCerts:",
 //       error.response?.data || error.message
 //     );
@@ -204,7 +202,7 @@ async function getMomentumInsuredContacts(token, insuredIds) {
 
     return res.data;
   } catch (error) {
-    console.error(
+    logger.error(
       "Error fetching insured contacts:",
       error.response?.data || error
     );
@@ -373,7 +371,7 @@ async function insertNowCertsCompany(payload) {
 
     return response.data;
   } catch (error) {
-    console.error(
+    logger.error(
       "Error inserting insured:",
       error.response?.data || error.message
     );
@@ -398,7 +396,7 @@ async function insertNowCertsContacts(payload) {
 
     return response.data;
   } catch (error) {
-    console.error(
+    logger.error(
       "NowCerts Insured Insert Error:",
       error.response?.data || error.message
     );
@@ -462,7 +460,7 @@ async function getCompaniesModifiedLast1Hour() {
 
     return companies;
   } catch (error) {
-    console.error(
+    logger.error(
       "❌ Error fetching HubSpot companies (last 1 hour):",
       error.response?.data || error.message
     );
@@ -530,7 +528,7 @@ async function getContactsModifiedLast1Hour() {
 
     return contacts;
   } catch (error) {
-    console.error(
+    logger.error(
       "❌ Error fetching HubSpot contacts (last 1 hour):",
       error.response?.data || error.message
     );
@@ -572,7 +570,7 @@ async function searchContractBySourceId(sourceId) {
 
     return response.data.results[0] || null;
   } catch (error) {
-    console.error(
+    logger.error(
       "Error searching deal by sourceid:",
       error.response?.data || error.message
     );
@@ -609,7 +607,7 @@ async function updateContactById(contactId, momentum) {
     // console.log("✅ Contact updated successfully:", response.data.id);
     return response.data;
   } catch (error) {
-    console.error(
+    logger.error(
       "❌ Error updating HubSpot contact:",
       error?.response?.data || error.message
     );
@@ -644,7 +642,7 @@ async function updateContactById(contactId, momentum) {
 //     return response.data;
 
 //   } catch (error) {
-//     console.error(
+//     logger.error(
 //       "❌ Error fetching company:",
 //       error?.response?.data || error.message
 //     );
@@ -689,7 +687,7 @@ async function getCompanyById(companyId) {
     console.log("✅ Company fetched successfully:", response.data.id);
     return response.data;
   } catch (error) {
-    console.error(
+    logger.error(
       "❌ Error fetching company:",
       error?.response?.data || error.message
     );
@@ -778,7 +776,7 @@ async function getCompanyById(companyId) {
 //         return allContacts;
 
 //     } catch (error) {
-//         console.error(
+//         logger.error(
 //             "Error fetching HubSpot contacts with delta:",
 //             error.response?.data
 //         );
@@ -838,7 +836,7 @@ async function getCompanyById(companyId) {
 //         return response.data.results || [];
 
 //     } catch (error) {
-//         console.error(
+//         logger.error(
 //             "Error fetching HubSpot contacts with delta:",
 //             error.response?.data || error.message
 //         );
@@ -929,7 +927,7 @@ async function getCompanyById(companyId) {
 //         return response.data.results || [];
 
 //     } catch (error) {
-//         console.error(
+//         logger.error(
 //             "Error fetching HubSpot contacts with source_group delta:",
 //             error.response?.data || error.message
 //         );
@@ -1037,7 +1035,7 @@ async function fetchContactsWithSourceGroup() {
 
     return allContacts;
   } catch (error) {
-    console.error(
+    logger.error(
       "Error fetching HubSpot contacts (delta + pagination):",
       error.response?.data || error.message
     );
@@ -1064,7 +1062,7 @@ async function insertInsuredContact(data, accessToken) {
 
     return response?.data;
   } catch (error) {
-    console.error(
+    logger.error(
       "Error inserting insured record:",
       error.response?.data || error.message
     );
@@ -1140,7 +1138,7 @@ async function insertInsuredContact(data, accessToken) {
 
 //     return allContacts;
 //   } catch (error) {
-//     console.error(
+//     logger.error(
 //       "Error fetching lifecyclestage contacts:",
 //       error.response?.data || error.message
 //     );
@@ -1220,7 +1218,7 @@ async function insertInsuredContact(data, accessToken) {
 
 //     return allContacts;
 //   } catch (error) {
-//     console.error(
+//     logger.error(
 //       "Error fetching lifecyclestage contacts:",
 //       error.response?.data || error.message
 //     );
@@ -1244,9 +1242,13 @@ async function searchLifestageContacts() {
           {
             filters: [
               {
-                propertyName: "hs_lastmodifieddate",
+                propertyName: "lastmodifieddate",
                 operator: "GTE",
                 value: oneHourAgo.toString(),
+              },
+              {
+                propertyName: "source_group",
+                operator: "HAS_PROPERTY",
               },
             ],
           },
@@ -1266,8 +1268,9 @@ async function searchLifestageContacts() {
           "project_description",
           "website",
           "commercialName",
+          "source_group",
         ],
-        limit: 200,
+        limit: 100,
         ...(after && { after }),
       };
 
@@ -1287,15 +1290,17 @@ async function searchLifestageContacts() {
 
       after = response?.data?.paging?.next?.after;
 
-      console.log(
+      logger.info(
         `Fetched ${results.length} contacts | Total: ${allContacts.length}`
       );
     } while (after);
 
     // ✅ filter lifecyclestage safely in code
+    logger.info(`Filtered contacts with lifecyclestage: ${allContacts.length}`);
+    return allContacts;
     return allContacts.filter((c) => c.properties?.lifecyclestage);
   } catch (error) {
-    console.error(
+    logger.error(
       "Error fetching lifecyclestage contacts:",
       error.response?.data || error.message
     );
@@ -1322,7 +1327,7 @@ async function SearchProspectsMomentum(databaseId, accessToken) {
 
     return response.data;
   } catch (error) {
-    console.error(
+    logger.error(
       "Error fetching NOWCERTS customers:",
       error.response?.data || error.message
     );
@@ -1346,7 +1351,7 @@ async function insertProspectInMomentum(payload, accessToken) {
     );
     return response.data;
   } catch (error) {
-    console.error(
+    logger.error(
       "Error inserting insured:",
       error.response?.data || error.message
     );
@@ -1370,7 +1375,7 @@ async function insertPrincipal(payload, accessToken) {
 
     return response.data;
   } catch (error) {
-    console.error(
+    logger.error(
       "Error inserting principal:",
       error.response?.data || error.message
     );
@@ -1417,7 +1422,7 @@ async function getContactById(contactId) {
     console.log("✅ Contact fetched successfully:", response.data.id);
     return response.data;
   } catch (error) {
-    console.error(
+    logger.error(
       "❌ Error fetching contact:",
       error?.response?.data || error.message
     );
@@ -1443,7 +1448,7 @@ async function SearchdatabaseIdInMomentum(email, accessToken) {
 
     return response.data[0] || null;
   } catch (error) {
-    console.error(
+    logger.error(
       "Error fetching NOWCERTS customers:",
       error.response?.data || error.message
     );
@@ -1473,7 +1478,7 @@ async function insertQuoteInMomentum({ payload, accessToken }) {
     console.log("✅ Quote inserted successfully:", response.data);
     return response.data;
   } catch (error) {
-    console.error(
+    logger.error(
       "❌ Error inserting quote:",
       error?.response?.data || error.message
     );

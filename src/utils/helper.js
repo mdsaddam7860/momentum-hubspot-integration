@@ -152,12 +152,10 @@ function normalizeProjectState(state) {
 // for Contact Payload
 
 function buildMomentumContactPayload(contact, company = {}) {
-
   const payload = cleanProps({
     insured_type: "Commercial",
     type: 0,
 
-   
     commercialName: company?.properties?.name || null,
     Email: contact?.properties?.email || null,
     Phone: contact?.properties?.phone || null,
@@ -173,9 +171,8 @@ function buildMomentumContactPayload(contact, company = {}) {
     description: company?.properties?.description || null,
     website: company?.properties?.website || null,
     fax: company?.properties?.fax || null,
-    State : company?.properties?.state || null,
+    State: company?.properties?.state || null,
     County: company?.properties?.county || null,
-  
   });
 
   return payload;
@@ -226,13 +223,18 @@ function buildMomentumContactPayload(contact, company = {}) {
 // }
 
 function buildProspectsPayload(contact, company) {
+  if (!contact || !company) {
+    logger.warn(
+      `Company name or firstName and last name is required for contact ID:${contact?.id}`
+    );
+    return null;
+  }
   const payload = cleanProps({
-
     insured_type: "Commercial",
     type: 0,
 
-    // firstName: contact?.properties?.firstname || null,
-    // lastName: contact?.properties?.lastname || null,
+    firstName: contact?.properties?.firstname || null,
+    lastName: contact?.properties?.lastname || null,
     commercialName: company?.properties?.name || null,
     addressLine1: contact?.properties?.address || null,
     city: contact?.properties?.city || null,
@@ -260,9 +262,6 @@ function buildPrincipalPayload(contact, insuredDatabaseId) {
     personal_email: contact?.properties?.email || null,
     business_email: contact?.properties?.email || null,
     insured_email: contact?.properties?.email || null,
-
-
-    
   });
 
   return payload;

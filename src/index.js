@@ -1,16 +1,23 @@
-
 // import "dotenv/config";
 
-import { app } from "./app.js"; 
-import {cleanProps} from "./utils/helper.js"
+import { cleanProps } from "./utils/helper.js";
 
+import { logger } from "./utils/winstonlogger.js";
 
-import{logger}from "./utils/logger.js"
+import {
+  getHubspotContacts,
+  getHubspotCompanies,
+  createHubspotCompany,
+  createCompanyInMomentum,
+  associateCompanyToContact,
+  searchCompanyBySourceId,
+  getAssociatedCompanies,
+  updateHubspotContact,
+  getAllHubSpotDeals,
+  getAssociatedContactsByDealId,
+} from "./service/hubspot.js";
 
-import { getHubspotContacts, getHubspotCompanies, createHubspotCompany, createCompanyInMomentum, 
-    associateCompanyToContact, searchCompanyBySourceId, getAssociatedCompanies,updateHubspotContact,getAllHubSpotDeals,getAssociatedContactsByDealId} from "./service/hubspot.js";
-
-import { 
+import {
   getAccessToken,
   insertInsuredInMomentum,
   fetchMomentumCustomers,
@@ -32,21 +39,21 @@ import {
 } from "./service/momentum.service.js";
 
 import { hubspotToMomentumsync } from "./Controller/hubspotToMomentum.js";
-import{createHubspotContact}from "./service/hubspot.js"
-import{searchContactBySourceId}from "./service/hubspot.js"
-import{getAllHubspotCompanies}from "./service/hubspot.js"
-import{searchContactByEmail}from "./service/hubspot.js"
-import{getAllCompanies}from "./service/hubspot.js"
-import{getAllContacts}from "./service/hubspot.js"
-import{searchContractBySourceId}from "./service/momentum.service.js"
-import{updateContactById}from "./service/momentum.service.js"
-import{getCompanyById}from "./service/momentum.service.js"
- //-----------------------------------+------------------------------------------//
-export { 
-  app,
+import { createHubspotContact } from "./service/hubspot.js";
+import { searchContactBySourceId } from "./service/hubspot.js";
+import { getAllHubspotCompanies } from "./service/hubspot.js";
+import { searchContactByEmail } from "./service/hubspot.js";
+import { getAllCompanies } from "./service/hubspot.js";
+import { getAllContacts } from "./service/hubspot.js";
+import { searchContractBySourceId } from "./service/momentum.service.js";
+import { updateContactById } from "./service/momentum.service.js";
+import { getCompanyById } from "./service/momentum.service.js";
+// import { searchLifestageContacts } from "../service/momentum.service.js";
+
+//-----------------------------------+------------------------------------------//
+export {
   logger,
   cleanProps,
-
   createHubspotCompany,
   fetchMomentumCustomers,
   getHubspotContacts,
@@ -84,6 +91,4 @@ export {
   getContactById,
   SearchdatabaseIdInMomentum,
   insertQuoteInMomentum,
-
-
 };
