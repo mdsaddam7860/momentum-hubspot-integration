@@ -100,7 +100,6 @@ async function syncProspectContact() {
               2
             )}`
           );
-          return; // TODO Remove after testing
         }
         //-----------------------------------------------------------------------------------------------
         // for customer
@@ -165,7 +164,6 @@ async function syncProspectContact() {
               2
             )}`
           );
-          return; // TODO Remove after testing
         }
       } catch (error) {
         logger.error(`Error syncing Contact ID ${contact}:`, error);
