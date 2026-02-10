@@ -1,0 +1,22 @@
+{
+  "name": "hub-sport-2-momentum-integration",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node -r dotenv/configmomentum.js",
+    "start": "node momentum.js"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "dotenv": "^17.2.3",
+    "expess": "^0.0.1-security",
+    "logger": "^0.0.1",
+    "node-cron": "^4.2.1",
+    "winston": "^3.19.0",
+    "winston-daily-rotate-file": "^5.0.0"
+  }
+}
