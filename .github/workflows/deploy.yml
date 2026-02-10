@@ -29,7 +29,9 @@ jobs:
           cd ~/applications/mgzvezdscw/public_html/momentum-hubspot-integration
 
           # Pull latest code
-          git pull origin main
+          git fetch origin
+          git reset --hard origin/main
+          git clean -fd
 
           # Install dependencies (production only)
           npm ci --production
