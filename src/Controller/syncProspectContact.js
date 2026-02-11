@@ -45,14 +45,6 @@ async function syncProspectContact() {
           lifecycleStage === "structuredquerylanguage" ||
           lifecycleStage === "opportunity"
         ) {
-          logger.info(
-            `Processing contact ID ${JSON.stringify(
-              contact,
-              null,
-              2
-            )} | Stage: ${lifecycleStage}`
-          );
-
           // search associated company
           const associatedCompany = await getAssociatedCompanyByContactId(
             contact?.id
@@ -131,14 +123,6 @@ async function syncProspectContact() {
         //-----------------------------------------------------------------------------------------------
         // for customer
         if (lifecycleStage === "customer") {
-          logger.info(
-            `Processing contact ID${JSON.stringify(
-              contact,
-              null,
-              2
-            )} | Stage: ${lifecycleStage}`
-          );
-
           // search associated company
           const associatedCompany = await getAssociatedCompanyByContactId(
             contact?.id
