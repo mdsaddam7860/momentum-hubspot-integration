@@ -27,6 +27,13 @@ async function syncProspectContact() {
     for (const contact of contacts) {
       try {
         const lifecycleStage = contact.properties?.lifecyclestage;
+        logger.info(
+          `Contact ${JSON.stringify(
+            contact,
+            null,
+            2
+          )} | Stage: ${lifecycleStage}`
+        );
 
         // Skip if no lifecycle stage
         if (!lifecycleStage) {
@@ -56,8 +63,11 @@ async function syncProspectContact() {
           );
           if (!associatedCompany) {
             logger.info(
-              `No associated company found for contact ID:${contact.id}`
+              `No associated company found for contact ID:${JSON.stringify(
+                contact
+              )}`
             );
+            continue;
           }
 
           let company = null;
@@ -139,8 +149,11 @@ async function syncProspectContact() {
           );
           if (!associatedCompany) {
             logger.info(
-              `No associated company found for contact ID:${contact.id}`
+              `No associated company found for contact ID:${JSON.stringify(
+                contact
+              )}`
             );
+            continue;
           }
 
           let company = null;
