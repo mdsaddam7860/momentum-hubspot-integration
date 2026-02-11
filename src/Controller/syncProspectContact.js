@@ -79,6 +79,18 @@ async function syncProspectContact() {
           logger.info(
             ` prospect in Momentum ${JSON.stringify(prospect, null, 2)}`
           );
+
+          // Update sourceId
+
+          let updatedContact = null;
+          updatedContact = await updateContactById(contact.id, prospect);
+          logger.info(
+            `Contact updated successfully ${JSON.stringify(
+              updatedContact,
+              null,
+              2
+            )}`
+          );
           // buit principal payload
           const principalPayload = buildPrincipalPayload(
             contact,
@@ -141,6 +153,18 @@ async function syncProspectContact() {
           const insured = await insertProspectInMomentum(payload, accessToken);
           logger.info(
             ` Insured in Momentum ${JSON.stringify(insured, null, 2)}`
+          );
+
+          // Update sourceId
+
+          let updatedContact = null;
+          updatedContact = await updateContactById(contact.id, insured);
+          logger.info(
+            `Contact updated successfully ${JSON.stringify(
+              updatedContact,
+              null,
+              2
+            )}`
           );
 
           // buit principal payload

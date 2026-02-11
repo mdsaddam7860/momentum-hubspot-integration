@@ -4,9 +4,9 @@ import { syncProspectContact } from "../Controller/syncProspectContact.js";
 
 let isRunning = false;
 
-logger.info(`➡️   Every hour Momentum Schedular Intialized`);
+logger.info(`➡️ Momentum Schedular Intialized....`);
 
-cron.schedule("0 0 * * * *", async () => {
+cron.schedule("0 */15 * * * *", async () => {
   try {
     if (isRunning) {
       logger.info("⏳ Previous job still running, skipping...");
@@ -16,7 +16,7 @@ cron.schedule("0 0 * * * *", async () => {
     logger.info(`Every hour Schedular Started `);
 
     await syncProspectContact();
-    logger.info("✅ Cron finished");
+    logger.info("✅ Momentum Scheduler finished Executing");
   } catch (error) {
     logger.error("❌ Scheduler error:", error);
   } finally {

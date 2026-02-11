@@ -7,8 +7,8 @@ import { searchContractBySourceId } from "../service/momentum.service.js";
 import { getAssociatedCompanyByContactId } from "../service/hubspot.js";
 import { updateContactById } from "../service/momentum.service.js";
 import { getCompanyById } from "../service/momentum.service.js";
-import{fetchContactsWithSourceGroup}from "../service/momentum.service.js"
-import{insertInsuredContact}from "../service/momentum.service.js"
+import { fetchContactsWithSourceGroup } from "../service/momentum.service.js";
+import { insertInsuredContact } from "../service/momentum.service.js";
 
 // sync contacts in momentum
 
@@ -32,50 +32,64 @@ async function syncContactMomentum() {
 
     // call the function for all contacts by sourceGroup
     const contacts = await fetchContactsWithSourceGroup();
-    logger.info(`final Contacts:${JSON.stringify(contacts.length) }`);
-    logger.info (`Contact ${JSON.stringify(contacts[0], null,2 )}`)
+    logger.info(`final Contacts:${JSON.stringify(contacts.length)}`);
+    logger.info(`Contact ${JSON.stringify(contacts[0], null, 2)}`);
     // return;//todo remove after testing
 
     for (const contact of contacts) {
       try {
-      
-        
         // logger.info(`Contact ${JSON.stringify(contact, null,2 )}`);
-        
+
         // search associated company
         const associatedCompany = await getAssociatedCompanyByContactId(
           contact?.id
         );
-      
-        logger.info(`Associated Company ${JSON.stringify(associatedCompany, null,2 )}`)
+
+        logger.info(
+          `Associated Company ${JSON.stringify(associatedCompany, null, 2)}`
+        );
         if (!associatedCompany) {
-          logger.info(`No associated company found for contact ID:${contact.id}`);
+          logger.info(
+            `No associated company found for contact ID:${contact.id}`
+          );
         }
-       
-        
-        
+
         let company = null;
         if (associatedCompany?.id) {
           company = await getCompanyById(associatedCompany.id);
-          logger.info(`Company ${JSON.stringify(company, null,2 )}`);
+          logger.info(`Company ${JSON.stringify(company, null, 2)}`);
         }
         logger.info("Contact:", contact);
         const contactPayload = buildMomentumContactPayload(contact, company);
-        logger.info(` Contact Payload ${JSON.stringify(contactPayload,null,2)}`);
+        logger.info(
+          ` Contact Payload ${JSON.stringify(contactPayload, null, 2)}`
+        );
 
         // return; //todo remove after testing
         // ✅ Create Contact in Momentum
         let contactMomentum = null;
-         contactMomentum = await createContactInMomentum(contactPayload,accessToken);
-         logger.info(`Contact created in Momentum ${JSON.stringify(contactMomentum, null,2 )}`);
+        contactMomentum = await createContactInMomentum(
+          contactPayload,
+          accessToken
+        );
+        logger.info(
+          `Contact created in Momentum ${JSON.stringify(
+            contactMomentum,
+            null,
+            2
+          )}`
+        );
 
-         // ✅ Update Function in Momentum
-         let updatedContact= null;
-         updatedContact = await updateContactById(contact.id, contactMomentum);
-        logger.info(`Contact updated successfully ${JSON.stringify(updatedContact, null,2 )}`);
-
-
-
+        // ✅ Update Momentum insuredDataBaseId in Hubspot
+        let updatedContact = null;
+        updatedContact = await updateContactById(contact.id, contactMomentum);
+        logger.info(
+          `Contact updated successfully ${JSON.stringify(
+            updatedContact,
+            null,
+            2
+          )}`
+        );
 
         return; // todo remove after testing
       } catch (error) {

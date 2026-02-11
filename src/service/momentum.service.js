@@ -1228,12 +1228,12 @@ async function insertInsuredContact(data, accessToken) {
 
 // add delta function
 async function searchLifestageContacts() {
-  console.log("Fetching contacts updated in last hour min");
+  console.log("Fetching contacts updated in last 30 min");
 
   const allContacts = [];
   let after = undefined;
 
-  const oneHourAgo = Date.now() - 60 * 60 * 1000;
+  const halfHourAgo = Date.now() - 30 * 60 * 1000;
 
   try {
     do {
@@ -1244,7 +1244,7 @@ async function searchLifestageContacts() {
               {
                 propertyName: "lastmodifieddate",
                 operator: "GTE",
-                value: oneHourAgo.toString(),
+                value: halfHourAgo.toString(),
               },
               {
                 propertyName: "source_group",
