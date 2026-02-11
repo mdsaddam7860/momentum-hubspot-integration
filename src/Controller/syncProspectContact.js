@@ -72,6 +72,11 @@ async function syncProspectContact() {
 
           // Build payload
           const payload = buildProspectsPayload(contact, company);
+
+          if (!payload) {
+            logger.warn(`Payload is null for contact ID:${contact}`);
+            continue;
+          }
           logger.info(`Prospect Payload:${JSON.stringify(payload, null, 2)}`);
 
           // Update and Create Prospect
@@ -147,6 +152,10 @@ async function syncProspectContact() {
           // build payload for customer
 
           const payload = buildMomentumContactPayload(contact, company);
+          if (!payload) {
+            logger.warn(`Payload is null for contact ID:${contact}`);
+            continue;
+          }
           logger.info(` Insured Payload:${JSON.stringify(payload, null, 2)}`);
 
           // Create and Update Customer

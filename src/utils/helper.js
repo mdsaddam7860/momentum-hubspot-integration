@@ -1,3 +1,5 @@
+import { logger } from "../index.js";
+
 function cleanProps(obj) {
   const cleaned = {};
 
