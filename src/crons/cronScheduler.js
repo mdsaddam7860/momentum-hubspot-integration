@@ -13,7 +13,7 @@ cron.schedule("0 */15 * * * *", async () => {
       return;
     }
     isRunning = true;
-    logger.info(`Every hour Schedular Started `);
+    logger.info(`Every 15 minute Schedular Started `);
 
     await syncProspectContact();
     logger.info("✅ Momentum Scheduler finished Executing");
