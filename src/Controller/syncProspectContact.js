@@ -56,29 +56,27 @@ async function syncProspectContact() {
           if (!associatedCompany) {
             logger.info(
               `No associated company found for contact ID:${JSON.stringify(
-                contact
+                contact?.id
               )}`
             );
-            continue;
           }
 
           let company = null;
           if (associatedCompany?.id) {
             company = await getCompanyById(associatedCompany.id);
-            logger.info(`Company ${JSON.stringify(company, null, 2)}`);
-          }
-
-          if (!company) {
-            logger.info(`No company found for contact ID:${contact.id}`);
+            if (!company) {
+              logger.info(`No company found for contact ID:${contact.id}`);
+            }
+            logger.info(`Company ${JSON.stringify(company)}`);
           }
 
           // Build payload
           const payload = buildProspectsPayload(contact, company);
 
-          if (!payload) {
-            logger.warn(`Payload is null for contact ID:${contact}`);
-            continue;
-          }
+          // if (!payload) {
+          //   logger.warn(`Payload is null for contact ID:${contact}`);
+          //   continue;
+          // }
           logger.info(`Prospect Payload:${JSON.stringify(payload, null, 2)}`);
 
           // Update and Create Prospect
@@ -141,10 +139,9 @@ async function syncProspectContact() {
           if (!associatedCompany) {
             logger.info(
               `No associated company found for contact ID:${JSON.stringify(
-                contact
+                contact?.id
               )}`
             );
-            continue;
           }
 
           let company = null;
@@ -156,10 +153,10 @@ async function syncProspectContact() {
           // build payload for customer
 
           const payload = buildMomentumContactPayload(contact, company);
-          if (!payload) {
-            logger.warn(`Payload is null for contact ID:${contact}`);
-            continue;
-          }
+          // if (!payload) {
+          //   logger.warn(`Payload is null for contact ID:${contact}`);
+          //   continue;
+          // }
           logger.info(` Insured Payload:${JSON.stringify(payload, null, 2)}`);
 
           // Create and Update Customer
