@@ -35,7 +35,7 @@ async function syncProspectContact() {
         // for prospects
         if (
           lifecycleStage === "marketingqualifiedlead" ||
-          lifecycleStage === "structuredquerylanguage" ||
+          lifecycleStage === "salesqualifiedlead" ||
           lifecycleStage === "opportunity"
         ) {
           logger.info(
