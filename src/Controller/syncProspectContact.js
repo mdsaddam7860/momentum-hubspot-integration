@@ -27,13 +27,6 @@ async function syncProspectContact() {
     for (const contact of contacts) {
       try {
         const lifecycleStage = contact.properties?.lifecyclestage;
-        logger.info(
-          `Contact ${JSON.stringify(
-            contact,
-            null,
-            2
-          )} | Stage: ${lifecycleStage}`
-        );
 
         // Skip if no lifecycle stage
         if (!lifecycleStage) {
@@ -42,9 +35,16 @@ async function syncProspectContact() {
         // for prospects
         if (
           lifecycleStage === "marketingqualifiedlead" ||
-          lifecycleStage === "structuredquerylanguage" ||
+          lifecycleStage === "salesqualifiedlead" ||
           lifecycleStage === "opportunity"
         ) {
+          logger.info(
+            `Contact ${JSON.stringify(
+              contact,
+              null,
+              2
+            )} | Stage: ${lifecycleStage}`
+          );
           // search associated company
           const associatedCompany = await getAssociatedCompanyByContactId(
             contact?.id
@@ -123,6 +123,13 @@ async function syncProspectContact() {
         //-----------------------------------------------------------------------------------------------
         // for customer
         if (lifecycleStage === "customer") {
+          logger.info(
+            `Contact ${JSON.stringify(
+              contact,
+              null,
+              2
+            )} | Stage: ${lifecycleStage}`
+          );
           // search associated company
           const associatedCompany = await getAssociatedCompanyByContactId(
             contact?.id
@@ -199,9 +206,8 @@ async function syncProspectContact() {
         logger.error(`Error syncing Contact ID ${contact}:`, error);
       }
     }
-    logger.info(" ☘️ All Prospect synced successfully.");
   } catch (error) {
-    logger.error(`❌ Error fetching customers:`, error);
+    logger.error(`❌ Error in  syncProspectContact:`, error);
   }
 }
 
