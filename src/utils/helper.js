@@ -153,7 +153,7 @@ function normalizeProjectState(state) {
 
 // for Contact Payload
 
-function buildMomentumContactPayload(contact, company = {}) {
+function buildMomentumContactPayload(contact = {}, company = {}) {
   const payload = cleanProps({
     insured_type: "Commercial",
     type: 0,
@@ -225,7 +225,7 @@ function buildMomentumContactPayload(contact, company = {}) {
 // }
 
 function buildProspectsPayload(contact, company) {
-  if (!contact || !company) {
+  if (!contact) {
     logger.warn(
       `Company name or firstName and last name is required for contact ID:${contact?.id}`
     );
@@ -248,8 +248,6 @@ function buildProspectsPayload(contact, company) {
     description: contact?.properties?.project_description || null,
     website: contact?.properties?.website || null,
     fax: contact?.properties?.fax || null,
-
-    // }
   });
 
   return payload;
