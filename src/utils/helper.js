@@ -225,18 +225,16 @@ function buildMomentumContactPayload(contact = {}, company = {}) {
 // }
 
 function buildProspectsPayload(contact, company) {
-  if (!contact) {
-    logger.warn(
-      `Company name or firstName and last name is required for contact ID:${contact?.id}`
-    );
+  if (!company?.properties?.name) {
+    logger.warn(`Company name is required for contact ID:${contact?.id}`);
     return null;
   }
   const payload = cleanProps({
     insured_type: "Commercial",
     type: 0,
 
-    firstName: contact?.properties?.firstname || null,
-    lastName: contact?.properties?.lastname || null,
+    // firstName: contact?.properties?.firstname || null,
+    // lastName: contact?.properties?.lastname || null,
     commercialName: company?.properties?.name || null,
     addressLine1: contact?.properties?.address || null,
     city: contact?.properties?.city || null,

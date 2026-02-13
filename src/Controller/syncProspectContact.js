@@ -20,7 +20,6 @@ async function syncProspectContact() {
   try {
     const accessToken = await getAccessToken();
 
-    //
     const contacts = await searchLifestageContacts();
     logger.info(`Lifestage Contacts:${JSON.stringify(contacts.length)}`);
 
@@ -51,7 +50,7 @@ async function syncProspectContact() {
           );
 
           logger.info(
-            `Associated Company ${JSON.stringify(associatedCompany, null, 2)}`
+            `Associated Company ${JSON.stringify(associatedCompany)}`
           );
           if (!associatedCompany) {
             logger.info(
@@ -73,37 +72,29 @@ async function syncProspectContact() {
           // Build payload
           const payload = buildProspectsPayload(contact, company);
 
-          // if (!payload) {
-          //   logger.warn(`Payload is null for contact ID:${contact}`);
-          //   continue;
-          // }
-          logger.info(`Prospect Payload:${JSON.stringify(payload, null, 2)}`);
+          if (!payload) {
+            logger.warn(`Payload is null for contact ID:${contact}`);
+            continue;
+          }
+          logger.info(`Prospect Payload:${JSON.stringify(payload)}`);
 
           // Update and Create Prospect
           const prospect = await insertProspectInMomentum(payload, accessToken);
-          logger.info(
-            ` prospect in Momentum ${JSON.stringify(prospect, null, 2)}`
-          );
+          logger.info(` prospect in Momentum ${JSON.stringify(prospect)}`);
 
           // Update sourceId
 
           let updatedContact = null;
           updatedContact = await updateContactById(contact.id, prospect);
           logger.info(
-            `Contact updated successfully ${JSON.stringify(
-              updatedContact,
-              null,
-              2
-            )}`
+            `Contact updated successfully ${JSON.stringify(updatedContact)}`
           );
           // buit principal payload
           const principalPayload = buildPrincipalPayload(
             contact,
             prospect.insuredDatabaseId
           );
-          logger.info(
-            `Principal Payload:${JSON.stringify(principalPayload, null, 2)}`
-          );
+          logger.info(`Principal Payload:${JSON.stringify(principalPayload)}`);
 
           // Insrert Principal
           const principalResponse = await insertPrincipal(
@@ -111,11 +102,7 @@ async function syncProspectContact() {
             accessToken
           );
           logger.info(
-            `Principal in Momentum ${JSON.stringify(
-              principalResponse,
-              null,
-              2
-            )}`
+            `Principal in Momentum ${JSON.stringify(principalResponse)}`
           );
         }
         //-----------------------------------------------------------------------------------------------
@@ -147,7 +134,7 @@ async function syncProspectContact() {
           let company = null;
           if (associatedCompany?.id) {
             company = await getCompanyById(associatedCompany.id);
-            logger.info(`Company ${JSON.stringify(company, null, 2)}`);
+            logger.info(`Company ${JSON.stringify(company)}`);
           }
 
           // build payload for customer
@@ -157,13 +144,11 @@ async function syncProspectContact() {
           //   logger.warn(`Payload is null for contact ID:${contact}`);
           //   continue;
           // }
-          logger.info(` Insured Payload:${JSON.stringify(payload, null, 2)}`);
+          logger.info(` Insured Payload:${JSON.stringify(payload)}`);
 
           // Create and Update Customer
           const insured = await insertProspectInMomentum(payload, accessToken);
-          logger.info(
-            ` Insured in Momentum ${JSON.stringify(insured, null, 2)}`
-          );
+          logger.info(` Insured in Momentum ${JSON.stringify(insured)}`);
 
           // Update sourceId
 
