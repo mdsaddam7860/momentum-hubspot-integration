@@ -1,6 +1,6 @@
 // import "dotenv/config";
 
-import { cleanProps } from "./utils/helper.js";
+import { cleanProps, buildInsuredPayload } from "./utils/helper.js";
 
 import { logger } from "./utils/winstonlogger.js";
 
@@ -52,6 +52,7 @@ import { getCompanyById } from "./service/momentum.service.js";
 
 //-----------------------------------+------------------------------------------//
 export {
+  buildInsuredPayload,
   logger,
   cleanProps,
   createHubspotCompany,

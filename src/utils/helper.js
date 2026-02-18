@@ -7,13 +7,13 @@ function cleanProps(obj) {
     const value = obj[key];
 
     // Skip undefined
-    if (value === undefined) continue;
+    if (value === undefined || value === null || value === "") continue;
 
     // Allow null (HubSpot accepts null for some fields)
-    if (value === null) {
-      cleaned[key] = null;
-      continue;
-    }
+    // if (value === null) {
+    //   cleaned[key] = null;
+    //   continue;
+    // }
 
     // Allow strings and numbers directly
     if (
@@ -230,11 +230,7 @@ function buildProspectsPayload(contact, company) {
     return null;
   }
   const payload = cleanProps({
-    insured_type: "Commercial",
-    type: 0,
-
-    // firstName: contact?.properties?.firstname || null,
-    // lastName: contact?.properties?.lastname || null,
+    DatabaseId: contact.properties?.sourceid,
     commercialName: company?.properties?.name || null,
     addressLine1: contact?.properties?.address || null,
     city: contact?.properties?.city || null,
@@ -246,6 +242,37 @@ function buildProspectsPayload(contact, company) {
     description: contact?.properties?.project_description || null,
     website: contact?.properties?.website || null,
     fax: contact?.properties?.fax || null,
+    // insured_type: "Commercial",
+    // type: 0,
+  });
+
+  return payload;
+}
+function buildInsuredPayload(contact = {}) {
+  if (!contact?.properties?.firstname && !contact?.properties?.lastname) {
+    logger.warn(
+      `first and last name is required for creating insured for contact ID:${contact?.id}`
+    );
+    return null;
+  }
+  const payload = cleanProps({
+    DatabaseId: contact.properties?.sourceid,
+
+    firstName: contact?.properties?.firstname || null,
+    lastName: contact?.properties?.lastname || null,
+    // commercialName: company?.properties?.name || null,
+    addressLine1: contact?.properties?.address || null,
+    city: contact?.properties?.city || null,
+    zipCode: contact?.properties?.project_zip_code || null,
+    eMail: contact?.properties?.email || null,
+    phone: contact?.properties?.phone || null,
+    cellPhone: contact?.properties?.phone_number_1 || null,
+    smsPhone: contact?.properties?.second_phone || null,
+    description: contact?.properties?.project_description || null,
+    website: contact?.properties?.website || null,
+    fax: contact?.properties?.fax || null,
+    // insured_type: "Commercial",
+    // type: 0,
   });
 
   return payload;
@@ -299,4 +326,5 @@ export {
   buildProspectsPayload,
   buildPrincipalPayload,
   buildQuotePayload,
+  buildInsuredPayload,
 };

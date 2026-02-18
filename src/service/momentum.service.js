@@ -1269,6 +1269,7 @@ async function searchLifestageContacts() {
           "website",
           "commercialName",
           "source_group",
+          "sourceid",
         ],
         limit: 100,
         ...(after && { after }),
