@@ -25,14 +25,6 @@ async function syncProspectContact() {
 
     for (const contact of contacts) {
       try {
-        if (contact.id !== "203328780453") {
-          // logger.info(
-          //   `Contact ${JSON.stringify(contact, null, 2)} | Stage: ${
-          //     contact.properties?.lifecyclestage
-          //   }`
-          // );
-          continue;
-        }
         const lifecycleStage = contact.properties?.lifecyclestage;
 
         // Skip if no lifecycle stage
@@ -61,14 +53,14 @@ async function syncProspectContact() {
           // logger.info(
           //   `Associated Company ${JSON.stringify(associatedCompany)}`
           // );
-          let payload;
+          let payload = null;
           if (!associatedCompany) {
             logger.info(
               `No associated company found for contact ID:${JSON.stringify(
                 contact?.id
               )} creating insured in momentum`
             );
-            // create insured in momentum update contact in hubspot
+
             // Build payload
             payload = buildInsuredPayload(contact);
           } else {
@@ -86,7 +78,11 @@ async function syncProspectContact() {
           }
 
           if (!payload) {
-            logger.warn(`Payload is null :${JSON.stringify(payload)}`);
+            logger.warn(
+              `➡️ Payload is null for contact ID:${
+                contact.id
+              } | Payload :${JSON.stringify(payload)}`
+            );
             continue;
           }
           logger.info(`Payload:${JSON.stringify(payload)}`);
@@ -100,23 +96,23 @@ async function syncProspectContact() {
           let updatedContact = null;
           updatedContact = await updateContactById(contact.id, prospect);
           logger.info(
-            `Contact updated successfully ${JSON.stringify(updatedContact)}`
+            `➡️ Contact updated successfully ${JSON.stringify(updatedContact)}`
           );
           // buit principal payload
-          // const principalPayload = buildPrincipalPayload(
-          //   contact,
-          //   prospect.insuredDatabaseId
-          // );
-          // logger.info(`Principal Payload:${JSON.stringify(principalPayload)}`);
+          const principalPayload = buildPrincipalPayload(
+            contact,
+            prospect.insuredDatabaseId
+          );
+          logger.info(`Principal Payload:${JSON.stringify(principalPayload)}`);
 
           // Insrert Principal
-          // const principalResponse = await insertPrincipal(
-          //   principalPayload,
-          //   accessToken
-          // );
-          // logger.info(
-          //   `➡️ Principal in Momentum ${JSON.stringify(principalResponse)}`
-          // );
+          const principalResponse = await insertPrincipal(
+            principalPayload,
+            accessToken
+          );
+          logger.info(
+            `➡️ Principal in Momentum ${JSON.stringify(principalResponse)}`
+          );
         }
         //-----------------------------------------------------------------------------------------------
         // for customer
@@ -197,8 +193,6 @@ async function syncProspectContact() {
         //     )}`
         //   );
         // }
-
-        return; // TODO Remove after testing one contact
       } catch (error) {
         logger.error(`Error syncing Contact ID ${contact}:`, error);
       }
