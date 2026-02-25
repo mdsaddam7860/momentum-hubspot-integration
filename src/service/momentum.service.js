@@ -1335,6 +1335,34 @@ async function SearchProspectsMomentum(databaseId, accessToken) {
     return null;
   }
 }
+async function searchInMomentum(name, accessToken) {
+  if (!name || !accessToken) {
+    logger.warn(`name and accessToken is required`);
+    return null;
+  }
+  try {
+    const response = await axios.get(
+      "https://api.nowcerts.com/api/Customers/GetCustomers",
+      {
+        params: {
+          name,
+        },
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    return response?.data[0];
+  } catch (error) {
+    logger.error(
+      "Error fetching NOWCERTS customers:",
+      error.response?.data || error.message
+    );
+    return null;
+  }
+}
 
 // Update and Create Prospectfunction in Momentum
 async function insertProspectInMomentum(payload, accessToken) {
@@ -1511,4 +1539,5 @@ export {
   getContactById,
   SearchdatabaseIdInMomentum,
   insertQuoteInMomentum,
+  searchInMomentum,
 };

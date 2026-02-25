@@ -36,6 +36,7 @@ import {
   getContactById,
   SearchdatabaseIdInMomentum,
   insertQuoteInMomentum,
+  searchInMomentum,
 } from "./service/momentum.service.js";
 
 import { hubspotToMomentumsync } from "./Controller/hubspotToMomentum.js";
@@ -52,6 +53,7 @@ import { getCompanyById } from "./service/momentum.service.js";
 
 //-----------------------------------+------------------------------------------//
 export {
+  searchInMomentum,
   buildInsuredPayload,
   logger,
   cleanProps,

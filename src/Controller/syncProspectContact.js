@@ -9,7 +9,10 @@ import { updateContactById } from "../service/momentum.service.js";
 import { getCompanyById } from "../service/momentum.service.js";
 import { fetchContactsWithSourceGroup } from "../service/momentum.service.js";
 import { insertInsuredContact } from "../service/momentum.service.js";
-import { searchLifestageContacts } from "../service/momentum.service.js";
+import {
+  searchLifestageContacts,
+  searchInMomentum,
+} from "../service/momentum.service.js";
 import { SearchProspectsMomentum } from "../service/momentum.service.js";
 import { insertProspectInMomentum } from "../service/momentum.service.js";
 import { buildProspectsPayload } from "../utils/helper.js";
@@ -61,8 +64,14 @@ async function syncProspectContact() {
               )} creating insured in momentum`
             );
 
+            // serach based on first name and last name in momentum if exists pass it to payload
+            const name = `${contact?.properties?.first_name} ${contact?.properties?.last_name}`;
+
+            const momentumInsured = await searchInMomentum(name, accessToken);
+            logger.info(`Momentum insured ${JSON.stringify(momentumInsured)}`);
+
             // Build payload
-            payload = buildInsuredPayload(contact);
+            payload = buildInsuredPayload(contact, momentumInsured);
           } else {
             let company = null;
             if (associatedCompany?.id) {
@@ -73,8 +82,15 @@ async function syncProspectContact() {
               logger.info(`Company ${JSON.stringify(company)}`);
             }
 
+            // serach based on  name in momentum if exists pass it to payload
+            const momentumInsured = await searchInMomentum(
+              company?.properties?.name,
+              accessToken
+            );
+            logger.info(`Momentum insured ${JSON.stringify(momentumInsured)}`);
+
             // Build payload
-            payload = buildProspectsPayload(contact, company);
+            payload = buildProspectsPayload(contact, company, momentumInsured);
           }
 
           if (!payload) {

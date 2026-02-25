@@ -224,13 +224,14 @@ function buildMomentumContactPayload(contact = {}, company = {}) {
 //   return payload;
 // }
 
-function buildProspectsPayload(contact, company) {
+function buildProspectsPayload(contact, company, momentumInsured = {}) {
   if (!company?.properties?.name) {
     logger.warn(`Company name is required for contact ID:${contact?.id}`);
     return null;
   }
   const payload = cleanProps({
-    DatabaseId: contact.properties?.sourceid,
+    DatabaseId:
+      contact.properties?.sourceid || momentumInsured?.databaseId || null,
     commercialName: company?.properties?.name || null,
     addressLine1: contact?.properties?.address || null,
     city: contact?.properties?.city || null,
@@ -248,7 +249,7 @@ function buildProspectsPayload(contact, company) {
 
   return payload;
 }
-function buildInsuredPayload(contact = {}) {
+function buildInsuredPayload(contact = {}, momentumInsured = {}) {
   if (!contact?.properties?.firstname && !contact?.properties?.lastname) {
     logger.warn(
       `first and last name is required for creating insured for contact ID:${contact?.id}`
@@ -256,7 +257,7 @@ function buildInsuredPayload(contact = {}) {
     return null;
   }
   const payload = cleanProps({
-    DatabaseId: contact.properties?.sourceid,
+    DatabaseId: contact.properties?.sourceid || momentumInsured?.databaseId,
 
     firstName: contact?.properties?.firstname || null,
     lastName: contact?.properties?.lastname || null,
